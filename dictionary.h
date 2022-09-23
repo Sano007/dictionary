@@ -1,6 +1,9 @@
 #ifndef DICT_H
 #define DICT_H
 
+//#include "read_node.h"
+#include "writte_node.h"
+
 
 struct Dict{
 	char name;
@@ -14,16 +17,16 @@ struct Dict{
 struct Dict create_dictionary();
 
 
-struct Dict add_word(char* word);
+struct Dict add_word(struct Dict* dictionary, char* word);
 
 
-struct Dict remove_word(char* word);
+struct Dict remove_word(struct Dict* dictionary, char* word);
 
 
-char** list_all();
+char** list_all(struct Dict* dictionary);
 
 
-bool is_in_dict(char* word);
+bool is_in_dict(struct Dict* dictionary, char* word);
 
 
 #endif
