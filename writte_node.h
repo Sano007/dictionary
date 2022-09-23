@@ -4,13 +4,10 @@
 #include "dictionary.h"
 
 
-struct Dict* add_node(struct Dict* self, char* word);
+struct Node* add_node(struct Node* self, char* word);
 
 
-struct Dict* find_node(struct Dict* self, char* word);
-
-
-struct Dict* remove_node(struct Dict* self, char name);
+struct Node* remove_node(struct Node* self, char name);
 
 
 #endif

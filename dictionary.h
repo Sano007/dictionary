@@ -1,26 +1,31 @@
 #ifndef DICT_H
 #define DICT_H
 
-#include "writte_node.h"
 #include <stdbool.h>
 
 
-struct Dict{
+struct Node{
 	char name;
 	unsigned int nb_children;
-	struct Dict** children;
+	struct Node** children;
 	bool is_word;
 	char* last_word;
+};
+
+
+struct Dict{
+	struct Node child;
+	u_int64_t words_count;
 };
 
 
 struct Dict* create_dictionary();
 
 
-bool add_word(struct Dict* dictionary, char* word);
+void add_word(struct Dict* dictionary, char* word);
 
 
-bool remove_word(struct Dict* dictionary, char* word);
+void remove_word(struct Dict* dictionary, char* word);
 
 
 char** list_all(struct Dict* dictionary);

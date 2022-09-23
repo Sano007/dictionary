@@ -4,8 +4,8 @@
 #include "writte_node.h"
 
 
-struct Dict *new_node(char *word){
-	struct Dict *new = calloc(1, sizeof(struct Dict));
+struct Node *new_node(char *word){
+	struct Node *new = calloc(1, sizeof(struct Node));
 	new->children = NULL;
 	new->nb_children = 0;
 	new->is_word = true;
@@ -16,18 +16,18 @@ struct Dict *new_node(char *word){
 
 
 int compare(const void *a, const void *b){
-	struct Dict* a1 = (struct Dict*)(a);
-	struct Dict* b1 = (struct Dict*)(b);
+	struct Node* a1 = (struct Node*)(a);
+	struct Node* b1 = (struct Node*)(b);
 	return a1->name - b1->name;
 }
 
 
-struct Dict *add_node(struct Dict *self, char *word){
-	if (self == NULL)
-		return NULL;
+struct Node* add_node(struct Node* self, char *word){
 	if (word == NULL)
 		return NULL;
 	if(word[0] == '\0') return NULL;
+	if (self == NULL)
+		return new_node(word);
 	if (self->nb_children > 0)
 	{
 		for (int i = 0; i < self->nb_children; i++)
@@ -39,38 +39,37 @@ struct Dict *add_node(struct Dict *self, char *word){
 			}
 		}
 		self->nb_children++;
-		struct Dict **new_children = calloc(self->nb_children, sizeof(struct Dict *));
+		struct Node** new_children = calloc(self->nb_children, sizeof(struct Node*));
 		memcpy(new_children, self->children, self->nb_children);
 		free(self->children);
 		new_children[self->nb_children - 1] = new_node(&word[1]);
-		qsort(new_children, self->nb_children, sizeof(struct Dict*), compare);
+		qsort(new_children, self->nb_children, sizeof(struct Node*), compare);
 	}
 	else
 	{
 		if (self->last_word == NULL)
 		{
 			self->nb_children++;
-			self->children = calloc(1, sizeof(struct Dict *));
+			self->children = calloc(1, sizeof(struct Node*));
 			self->children[0] = new_node(&word[1]);
 		}
 		else
 		{
 			self->nb_children = 2;
-			self->children = calloc(2, sizeof(struct Dict *));
+			self->children = calloc(2, sizeof(struct Node*));
 			self->children[1] = new_node(&word[1]);
 			self->children[0] = new_node(self->last_word);
 			self->is_word = false;
 			self->last_word = NULL;
-			qsort(self->children, self->nb_children, sizeof(struct Dict*), compare);
+			qsort(self->children, self->nb_children, sizeof(struct Node*), compare);
 		}
 	}
 	return self;
 }
 
 
-struct Dict* remove_node(struct Dict* self, char name){
+struct Node* remove_node(struct Node* self, char name){
 	if(self == NULL) return NULL;
-	if(name == NULL) return NULL;
 	if(name == '\0') return NULL;
 	if(self->children != NULL) return NULL;
 	free(self->last_word);
@@ -79,10 +78,3 @@ struct Dict* remove_node(struct Dict* self, char name){
 	return NULL;
 }
 
-
-struct Dict* find_node(struct Dict* self, char* word){
-	if(self == NULL) return NULL;
-	if(word == NULL) return NULL;
-	if(word[0] == '\0') return NULL;
-	if(self->name != word[0]) return NULL;
-}
