@@ -1,5 +1,5 @@
-#ifndef WRITTE_NODE_H
-#define WRITTE_NODE_H
+#ifndef IO_NODE_H
+#define IO_NODE_H
 
 #include "dictionary.h"
 

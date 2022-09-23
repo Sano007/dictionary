@@ -1,7 +1,6 @@
 #ifndef DICT_H
 #define DICT_H
 
-//#include "read_node.h"
 #include "writte_node.h"
 
 
