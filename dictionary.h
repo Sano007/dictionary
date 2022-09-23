@@ -2,24 +2,25 @@
 #define DICT_H
 
 #include "writte_node.h"
+#include <stdbool.h>
 
 
 struct Dict{
 	char name;
-	unsigned int childs;
-	char* children;
+	unsigned int nb_children;
+	struct Dict** children;
 	bool is_word;
 	char* last_word;
 };
 
 
-struct Dict create_dictionary();
+struct Dict* create_dictionary();
 
 
-struct Dict add_word(struct Dict* dictionary, char* word);
+bool add_word(struct Dict* dictionary, char* word);
 
 
-struct Dict remove_word(struct Dict* dictionary, char* word);
+bool remove_word(struct Dict* dictionary, char* word);
 
 
 char** list_all(struct Dict* dictionary);
