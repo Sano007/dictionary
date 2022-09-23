@@ -4,8 +4,7 @@
 #include "writte_node.h"
 
 
-struct Dict *new_node(char *word)
-{
+struct Dict *new_node(char *word){
 	struct Dict *new = calloc(1, sizeof(struct Dict));
 	new->children = NULL;
 	new->nb_children = 0;
@@ -16,12 +15,19 @@ struct Dict *new_node(char *word)
 }
 
 
-struct Dict *add_node(struct Dict *self, char *word)
-{
+int compare(const void *a, const void *b){
+	struct Dict* a1 = (struct Dict*)(a);
+	struct Dict* b1 = (struct Dict*)(b);
+	return a1->name - b1->name;
+}
+
+
+struct Dict *add_node(struct Dict *self, char *word){
 	if (self == NULL)
 		return NULL;
-	if (word == NULL || word[0] == '\0')
+	if (word == NULL)
 		return NULL;
+	if(word[0] == '\0') return NULL;
 	if (self->nb_children > 0)
 	{
 		for (int i = 0; i < self->nb_children; i++)
@@ -37,6 +43,7 @@ struct Dict *add_node(struct Dict *self, char *word)
 		memcpy(new_children, self->children, self->nb_children);
 		free(self->children);
 		new_children[self->nb_children - 1] = new_node(&word[1]);
+		qsort(new_children, self->nb_children, sizeof(struct Dict*), compare);
 	}
 	else
 	{
@@ -54,7 +61,28 @@ struct Dict *add_node(struct Dict *self, char *word)
 			self->children[0] = new_node(self->last_word);
 			self->is_word = false;
 			self->last_word = NULL;
+			qsort(self->children, self->nb_children, sizeof(struct Dict*), compare);
 		}
 	}
 	return self;
+}
+
+
+struct Dict* remove_node(struct Dict* self, char name){
+	if(self == NULL) return NULL;
+	if(name == NULL) return NULL;
+	if(name == '\0') return NULL;
+	if(self->children != NULL) return NULL;
+	free(self->last_word);
+	free(self->children);
+	free(self);
+	return NULL;
+}
+
+
+struct Dict* find_node(struct Dict* self, char* word){
+	if(self == NULL) return NULL;
+	if(word == NULL) return NULL;
+	if(word[0] == '\0') return NULL;
+	if(self->name != word[0]) return NULL;
 }
